@@ -1,10 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>YSJ Newsroom Test</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YSJ Newsroom Test</title>
+
+<style>
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        background: #111;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    header {
+        height: 70px;
+        background: #222;
+        display: flex;
+        align-items: center;
+        padding: 0 25px;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    main {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 15px;
+        padding: 15px;
+        height: calc(100vh - 70px);
+    }
+
+    .panel {
+        background: #222;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .panel-title {
+        padding: 10px 15px;
+        font-size: 18px;
+        font-weight: bold;
+        background: #333;
+    }
+
+    iframe {
+        width: 100%;
+        border: 0;
+    }
+
+    .video {
+        height: calc(100% - 45px);
+    }
+
+    .weather {
+        padding: 20px;
+        font-size: 20px;
+    }
+
+    .weather h2 {
+        margin-top: 0;
+    }
+</style>
 </head>
+
 <body>
-    <h1>YSJ Newsroom</h1>
-    <p>If you can see this, our free web hosting is working!</p>
+
+<header>YSJ NEWSROOM</header>
+
+<main>
+
+    <section class="panel">
+        <div class="panel-title">SKY NEWS — LIVE TEST</div>
+
+        <iframe
+            class="video"
+            src="https://www.youtube.com/embed/geXLHd4IZ8s?autoplay=1&mute=1"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </section>
+
+    <section class="panel">
+        <div class="panel-title">YORK WEATHER</div>
+
+        <div class="weather">
+            <h2>Weather test</h2>
+            <p>If you're seeing this panel, the GitHub-hosted dashboard is working.</p>
+            <p>Next we'll add live York weather here.</p>
+        </div>
+    </section>
+
+</main>
+
 </body>
 </html>
