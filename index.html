@@ -138,7 +138,7 @@ main {
 
 .weather-content {
     height: calc(100% - 38px);
-    padding: 12px;
+    padding: 8px 10px;
     background:
         linear-gradient(
             135deg,
@@ -146,7 +146,6 @@ main {
             #23485b 50%,
             #111 100%
         );
-
     position: relative;
     overflow: hidden;
 }
@@ -154,13 +153,16 @@ main {
 .weather-content::after {
     content: "";
     position: absolute;
-    width: 180px;
-    height: 180px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     background: rgba(255,255,255,0.04);
-    right: -50px;
-    top: -70px;
+    right: -40px;
+    top: -60px;
 }
+
+
+/* MAIN WEATHER */
 
 .weather-main {
     display: flex;
@@ -168,123 +170,127 @@ main {
     justify-content: space-between;
     position: relative;
     z-index: 1;
+    height: 48px;
 }
 
 .weather-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 .weather-icon {
-    font-size: 54px;
+    font-size: 38px;
     line-height: 1;
 }
 
 .weather-temp {
-    font-size: 44px;
+    font-size: 32px;
     font-weight: bold;
     line-height: 1;
 }
 
 .weather-condition {
-    font-size: 15px;
+    font-size: 12px;
     color: #d5dfe4;
-    margin-top: 6px;
+    margin-top: 3px;
 }
 
 .weather-details {
     text-align: right;
-    font-size: 14px;
+    font-size: 12px;
     color: #d5dfe4;
-    line-height: 1.6;
+    line-height: 1.35;
 }
 
 .weather-details strong {
     color: white;
 }
 
+
+/* FOUR QUICK STATS */
+
 .weather-strip {
-    margin-top: 12px;
+    margin-top: 6px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
+    gap: 4px;
     position: relative;
     z-index: 1;
 }
 
 .weather-stat {
     background: rgba(0,0,0,0.28);
-    border-radius: 5px;
-    padding: 7px;
+    border-radius: 4px;
+    padding: 4px 3px;
     text-align: center;
 }
 
 .weather-stat-label {
-    font-size: 10px;
+    font-size: 8px;
     text-transform: uppercase;
     color: #aebfc8;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 .weather-stat-value {
-    font-size: 15px;
+    font-size: 11px;
     font-weight: bold;
-    margin-top: 3px;
+    margin-top: 1px;
 }
 
-.weather-sun {
-    margin-top: 8px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: #c5d2d8;
-    position: relative;
-    z-index: 1;
-}
+
+/* FOUR DAY FORECAST */
 
 .weather-forecast {
-    margin-top: 9px;
+    margin-top: 5px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 5px;
+    gap: 4px;
     position: relative;
     z-index: 1;
 }
 
 .weather-day {
     background: rgba(0,0,0,0.32);
-    border-radius: 5px;
-    padding: 5px;
+    border-radius: 4px;
+    padding: 3px;
     text-align: center;
-    font-size: 11px;
+    font-size: 9px;
+    line-height: 1.05;
 }
 
 .weather-day-name {
     font-weight: bold;
-    margin-bottom: 3px;
+    margin-bottom: 1px;
+    font-size: 9px;
 }
 
 .weather-day-icon {
-    font-size: 22px;
-    line-height: 1.1;
+    font-size: 16px;
+    line-height: 1;
 }
 
 .weather-day-temp {
     margin-top: 2px;
     font-weight: bold;
+    font-size: 10px;
 }
 
 .weather-day-rain {
     color: #a9d5ed;
-    font-size: 10px;
-    margin-top: 2px;
+    font-size: 8px;
+    margin-top: 1px;
 }
+
+
+/* ERROR / LOADING */
 
 .weather-status {
     text-align: center;
     color: #aaa;
-    padding-top: 25px;
+    padding-top: 20px;
+    font-size: 12px;
 }
 
 
