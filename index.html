@@ -42,7 +42,6 @@ header {
 /* MAIN GRID */
 
 main {
-
     display: grid;
 
     grid-template-columns: 1fr 1fr;
@@ -54,7 +53,6 @@ main {
         1fr;
 
     grid-template-areas:
-
         "sky weather"
         "sky clocks"
         "local bbc"
@@ -71,27 +69,18 @@ main {
 /* PANELS */
 
 .panel {
-
     background: #222;
-
     border-radius: 5px;
-
     overflow: hidden;
-
     min-height: 0;
 }
 
 
 .panel-title {
-
     height: 38px;
-
     padding: 9px 12px;
-
     font-size: 16px;
-
     font-weight: bold;
-
     background: #333;
 }
 
@@ -126,13 +115,9 @@ main {
 /* SKY NEWS */
 
 .sky-frame {
-
     display: block;
-
     width: 100%;
-
     height: calc(100% - 38px);
-
     border: 0;
 }
 
@@ -140,15 +125,10 @@ main {
 /* BBC NEWS */
 
 .bbc-video {
-
     display: block;
-
     width: 100%;
-
     height: calc(100% - 38px);
-
     object-fit: contain;
-
     background: #000;
 }
 
@@ -156,17 +136,13 @@ main {
 /* PLACEHOLDERS */
 
 .placeholder {
-
     height: calc(100% - 38px);
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     color: #888;
-
     font-size: 22px;
 }
 
@@ -174,23 +150,17 @@ main {
 /* RADIO */
 
 .radio-container {
-
     height: calc(100% - 38px);
-
     background: #111;
-
     padding: 12px;
 }
 
 
 .radio-container select {
-
     width: 100%;
-
     height: 42px;
 
     background: #333;
-
     color: white;
 
     border: 1px solid #555;
@@ -198,18 +168,13 @@ main {
     padding: 0 12px;
 
     font-size: 16px;
-
-    margin-bottom: 15px;
 }
 
-
-.radio-player {
-
-    width: 100%;
-
-    height: 45px;
-
-    display: block;
+.radio-message {
+    text-align: center;
+    color: #777;
+    margin-top: 25px;
+    font-size: 16px;
 }
 
 </style>
@@ -308,29 +273,25 @@ main {
 
         <div class="radio-container">
 
-            <select id="radioStation" onchange="changeRadio()">
+            <select id="radioStation">
 
-                <option value="bbc-york">
+                <option>
                     BBC Radio York
                 </option>
 
-                <option value="bbc-5live">
+                <option>
                     BBC Radio 5 Live
                 </option>
 
-                <option value="yorkmix">
+                <option>
                     YorkMix Radio
                 </option>
 
             </select>
 
-
-            <audio
-                id="radioPlayer"
-                class="radio-player"
-                controls
-                preload="none">
-            </audio>
+            <div class="radio-message">
+                Radio player — coming next
+            </div>
 
         </div>
 
@@ -369,9 +330,11 @@ main {
 
 <script>
 
-
 /* =====================================================
    BBC NEWS LIVE
+
+   THIS IS THE KNOWN-WORKING BBC CODE.
+   DO NOT ADD RADIO CODE TO THIS SECTION.
    ===================================================== */
 
 const video =
@@ -398,133 +361,6 @@ else if (
     video.src = streamUrl;
 
 }
-
-
-
-/* =====================================================
-   RADIO
-   ===================================================== */
-
-const radioPlayer =
-    document.getElementById('radioPlayer');
-
-
-let radioHls = null;
-
-
-function changeRadio() {
-
-    const station =
-        document.getElementById('radioStation').value;
-
-
-    /* Stop existing radio */
-
-    if (radioHls) {
-
-        radioHls.destroy();
-
-        radioHls = null;
-
-    }
-
-    radioPlayer.pause();
-
-    radioPlayer.removeAttribute('src');
-
-    radioPlayer.load();
-
-
-
-    /* ---------------------------------------------
-       BBC RADIO YORK
-       --------------------------------------------- */
-
-    if (station === 'bbc-york') {
-
-        const radioUrl =
-            'https://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_med/ak/bbc_radio_york.m3u8';
-
-
-        if (Hls.isSupported()) {
-
-            radioHls = new Hls();
-
-            radioHls.loadSource(radioUrl);
-
-            radioHls.attachMedia(radioPlayer);
-
-        }
-
-        else if (
-            radioPlayer.canPlayType(
-                'application/vnd.apple.mpegurl'
-            )
-        ) {
-
-            radioPlayer.src = radioUrl;
-
-        }
-
-    }
-
-
-
-    /* ---------------------------------------------
-       BBC RADIO 5 LIVE
-       --------------------------------------------- */
-
-    else if (station === 'bbc-5live') {
-
-        const radioUrl =
-            ''https://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_med/ak/bbc_5live.m3u8';
-
-
-        if (Hls.isSupported()) {
-
-            radioHls = new Hls();
-
-            radioHls.loadSource(radioUrl);
-
-            radioHls.attachMedia(radioPlayer);
-
-        }
-
-        else if (
-            radioPlayer.canPlayType(
-                'application/vnd.apple.mpegurl'
-            )
-        ) {
-
-            radioPlayer.src = radioUrl;
-
-        }
-
-    }
-
-
-
-    /* ---------------------------------------------
-       YORKMIX
-       --------------------------------------------- */
-
-    else if (station === 'yorkmix') {
-
-        /*
-           YorkMix does not currently expose a
-           verified direct audio URL on its public
-           radio page, so leave the player empty
-           rather than using a broken webpage URL.
-        */
-
-        radioPlayer.removeAttribute('src');
-
-        radioPlayer.load();
-
-    }
-
-}
-
 
 </script>
 
