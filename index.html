@@ -75,7 +75,6 @@ main {
     min-height: 0;
 }
 
-
 .panel-title {
     height: 38px;
     padding: 9px 12px;
@@ -133,70 +132,165 @@ main {
 }
 
 
-/* WEATHER */
+/* =====================================================
+   WEATHER
+   ===================================================== */
 
 .weather-content {
     height: calc(100% - 38px);
     padding: 12px;
-    background: #111;
+    background:
+        linear-gradient(
+            135deg,
+            #182c3a 0%,
+            #23485b 50%,
+            #111 100%
+        );
+
+    position: relative;
+    overflow: hidden;
+}
+
+.weather-content::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    right: -50px;
+    top: -70px;
 }
 
 .weather-main {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
+    z-index: 1;
+}
+
+.weather-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.weather-icon {
+    font-size: 54px;
+    line-height: 1;
 }
 
 .weather-temp {
-    font-size: 42px;
+    font-size: 44px;
     font-weight: bold;
+    line-height: 1;
 }
 
 .weather-condition {
-    font-size: 18px;
-    color: #ccc;
-    margin-top: 3px;
+    font-size: 15px;
+    color: #d5dfe4;
+    margin-top: 6px;
 }
 
 .weather-details {
     text-align: right;
+    font-size: 14px;
+    color: #d5dfe4;
+    line-height: 1.6;
+}
+
+.weather-details strong {
+    color: white;
+}
+
+.weather-strip {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    position: relative;
+    z-index: 1;
+}
+
+.weather-stat {
+    background: rgba(0,0,0,0.28);
+    border-radius: 5px;
+    padding: 7px;
+    text-align: center;
+}
+
+.weather-stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #aebfc8;
+    letter-spacing: 0.5px;
+}
+
+.weather-stat-value {
     font-size: 15px;
-    color: #bbb;
-    line-height: 1.5;
+    font-weight: bold;
+    margin-top: 3px;
+}
+
+.weather-sun {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #c5d2d8;
+    position: relative;
+    z-index: 1;
 }
 
 .weather-forecast {
-    margin-top: 12px;
-    display: flex;
-    gap: 6px;
+    margin-top: 9px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    position: relative;
+    z-index: 1;
 }
 
 .weather-day {
-    flex: 1;
-    background: #222;
-    border-radius: 4px;
-    padding: 7px;
+    background: rgba(0,0,0,0.32);
+    border-radius: 5px;
+    padding: 5px;
     text-align: center;
-    font-size: 13px;
+    font-size: 11px;
 }
 
 .weather-day-name {
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
+}
+
+.weather-day-icon {
+    font-size: 22px;
+    line-height: 1.1;
 }
 
 .weather-day-temp {
-    font-size: 16px;
+    margin-top: 2px;
+    font-weight: bold;
+}
+
+.weather-day-rain {
+    color: #a9d5ed;
+    font-size: 10px;
+    margin-top: 2px;
 }
 
 .weather-status {
-    color: #777;
     text-align: center;
+    color: #aaa;
     padding-top: 25px;
 }
 
 
-/* CLOCKS */
+/* =====================================================
+   CLOCKS
+   ===================================================== */
 
 .clocks-content {
     height: calc(100% - 38px);
@@ -230,7 +324,9 @@ main {
 }
 
 
-/* BBC LOCAL */
+/* =====================================================
+   BBC LOCAL NEWS
+   ===================================================== */
 
 .local-content {
     height: calc(100% - 38px);
@@ -239,15 +335,21 @@ main {
 }
 
 .news-item {
-    padding: 9px 12px;
+    padding: 8px 12px;
     border-bottom: 1px solid #333;
+    transition: background 0.15s;
+}
+
+.news-item:hover {
+    background: #292929;
 }
 
 .news-item a {
     color: white;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.25;
+    display: block;
 }
 
 .news-item a:hover {
@@ -256,7 +358,7 @@ main {
 
 .news-date {
     color: #777;
-    font-size: 12px;
+    font-size: 11px;
     margin-top: 4px;
 }
 
@@ -267,7 +369,9 @@ main {
 }
 
 
-/* RADIO */
+/* =====================================================
+   RADIO
+   ===================================================== */
 
 .radio-container {
     height: calc(100% - 38px);
@@ -296,6 +400,22 @@ main {
     font-size: 16px;
 }
 
+
+/* SCROLLBAR */
+
+.local-content::-webkit-scrollbar {
+    width: 7px;
+}
+
+.local-content::-webkit-scrollbar-track {
+    background: #181818;
+}
+
+.local-content::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+}
+
 </style>
 
 </head>
@@ -312,7 +432,9 @@ main {
 <main>
 
 
-    <!-- SKY NEWS -->
+    <!-- =================================================
+         SKY NEWS
+         ================================================= -->
 
     <section class="panel sky-panel">
 
@@ -333,7 +455,10 @@ main {
     </section>
 
 
-    <!-- YORK WEATHER -->
+
+    <!-- =================================================
+         YORK WEATHER
+         ================================================= -->
 
     <section class="panel weather-panel">
 
@@ -344,9 +469,11 @@ main {
         <div class="weather-content">
 
             <div id="weather-main">
+
                 <div class="weather-status">
                     Loading weather...
                 </div>
+
             </div>
 
             <div id="weather-forecast"
@@ -358,7 +485,10 @@ main {
     </section>
 
 
-    <!-- WORLD CLOCKS -->
+
+    <!-- =================================================
+         WORLD CLOCKS
+         ================================================= -->
 
     <section class="panel clocks-panel">
 
@@ -369,23 +499,50 @@ main {
         <div class="clocks-content">
 
             <div class="clock">
-                <div class="clock-city">London</div>
-                <div id="clock-london" class="clock-time">--:--</div>
+                <div class="clock-city">
+                    London
+                </div>
+
+                <div id="clock-london"
+                     class="clock-time">
+                    --:--:--
+                </div>
             </div>
 
-            <div class="clock">
-                <div class="clock-city">New York</div>
-                <div id="clock-newyork" class="clock-time">--:--</div>
-            </div>
 
             <div class="clock">
-                <div class="clock-city">Chicago</div>
-                <div id="clock-chicago" class="clock-time">--:--</div>
+                <div class="clock-city">
+                    Paris
+                </div>
+
+                <div id="clock-paris"
+                     class="clock-time">
+                    --:--:--
+                </div>
             </div>
 
+
             <div class="clock">
-                <div class="clock-city">Los Angeles</div>
-                <div id="clock-losangeles" class="clock-time">--:--</div>
+                <div class="clock-city">
+                    Washington D.C.
+                </div>
+
+                <div id="clock-washington"
+                     class="clock-time">
+                    --:--:--
+                </div>
+            </div>
+
+
+            <div class="clock">
+                <div class="clock-city">
+                    Sydney
+                </div>
+
+                <div id="clock-sydney"
+                     class="clock-time">
+                    --:--:--
+                </div>
             </div>
 
         </div>
@@ -393,7 +550,10 @@ main {
     </section>
 
 
-    <!-- BBC LOCAL -->
+
+    <!-- =================================================
+         BBC LOCAL
+         ================================================= -->
 
     <section class="panel local-panel">
 
@@ -413,7 +573,10 @@ main {
     </section>
 
 
-    <!-- RADIO -->
+
+    <!-- =================================================
+         RADIO
+         ================================================= -->
 
     <section class="panel radio-panel">
 
@@ -448,7 +611,10 @@ main {
     </section>
 
 
-    <!-- BBC NEWS -->
+
+    <!-- =================================================
+         BBC NEWS
+         ================================================= -->
 
     <section class="panel bbc-panel">
 
@@ -479,11 +645,11 @@ main {
 
 <script>
 
+
 /* =====================================================
    BBC NEWS LIVE
 
    DO NOT MODIFY THIS SECTION.
-   THIS IS THE KNOWN-WORKING BBC CODE.
    ===================================================== */
 
 const video =
@@ -520,15 +686,22 @@ function updateClocks() {
 
     const clocks = {
 
-        'clock-london': 'Europe/London',
+        'clock-london':
+            'Europe/London',
 
-        'clock-newyork': 'America/New_York',
+        'clock-paris':
+            'Europe/Paris',
 
-        'clock-chicago': 'America/Chicago',
+        'clock-washington':
+            'America/New_York',
 
-        'clock-losangeles': 'America/Los_Angeles'
+        'clock-sydney':
+            'Australia/Sydney'
 
     };
+
+
+    const now = new Date();
 
 
     Object.entries(clocks).forEach(
@@ -537,8 +710,6 @@ function updateClocks() {
             const element =
                 document.getElementById(id);
 
-            const now =
-                new Date();
 
             element.textContent =
                 new Intl.DateTimeFormat(
@@ -567,12 +738,12 @@ setInterval(
 
 
 /* =====================================================
-   YORK WEATHER
-   Open-Meteo
-   York coordinates
+   WEATHER
+   YORK
    ===================================================== */
 
 const yorkLatitude = 53.9599;
+
 const yorkLongitude = -1.0873;
 
 
@@ -583,35 +754,131 @@ function weatherDescription(code) {
         0: 'Clear sky',
 
         1: 'Mainly clear',
+
         2: 'Partly cloudy',
+
         3: 'Overcast',
 
         45: 'Fog',
+
         48: 'Freezing fog',
 
         51: 'Light drizzle',
+
         53: 'Drizzle',
+
         55: 'Heavy drizzle',
 
         61: 'Light rain',
+
         63: 'Rain',
+
         65: 'Heavy rain',
 
         71: 'Light snow',
+
         73: 'Snow',
+
         75: 'Heavy snow',
 
         80: 'Rain showers',
+
         81: 'Rain showers',
+
         82: 'Heavy rain showers',
 
         95: 'Thunderstorm',
+
         96: 'Thunderstorm',
+
         99: 'Thunderstorm'
 
     };
 
-    return descriptions[code] || 'Unknown conditions';
+
+    return descriptions[code]
+        || 'Unknown conditions';
+
+}
+
+
+function weatherIcon(code, isDay = true) {
+
+    if (!isDay) {
+
+        if (code === 0) return '🌙';
+
+        if (code <= 3) return '☁️';
+
+    }
+
+
+    if (code === 0) return '☀️';
+
+    if (code === 1) return '🌤️';
+
+    if (code === 2) return '⛅';
+
+    if (code === 3) return '☁️';
+
+    if (code === 45 || code === 48) return '🌫️';
+
+    if (code >= 51 && code <= 55) return '🌦️';
+
+    if (code >= 61 && code <= 65) return '🌧️';
+
+    if (code >= 71 && code <= 75) return '🌨️';
+
+    if (code >= 80 && code <= 82) return '🌦️';
+
+    if (code >= 95) return '⛈️';
+
+    return '🌤️';
+
+}
+
+
+function shortDayName(dateString, index) {
+
+    if (index === 0) {
+        return 'TODAY';
+    }
+
+
+    const date =
+        new Date(dateString + 'T12:00:00');
+
+
+    return date
+        .toLocaleDateString(
+            'en-GB',
+            {
+                weekday: 'short'
+            }
+        )
+        .toUpperCase();
+
+}
+
+
+function formatTime(dateString) {
+
+    if (!dateString) {
+        return '--:--';
+    }
+
+
+    const date =
+        new Date(dateString);
+
+
+    return date.toLocaleTimeString(
+        'en-GB',
+        {
+            hour: '2-digit',
+            minute: '2-digit'
+        }
+    );
 
 }
 
@@ -619,21 +886,46 @@ function weatherDescription(code) {
 async function loadWeather() {
 
     const main =
-        document.getElementById('weather-main');
+        document.getElementById(
+            'weather-main'
+        );
+
 
     const forecast =
-        document.getElementById('weather-forecast');
+        document.getElementById(
+            'weather-forecast'
+        );
 
 
     try {
 
         const url =
             'https://api.open-meteo.com/v1/forecast' +
-            '?latitude=' + yorkLatitude +
-            '&longitude=' + yorkLongitude +
-            '&current=temperature_2m,weather_code,wind_speed_10m' +
-            '&daily=temperature_2m_max,temperature_2m_min,weather_code' +
+
+            '?latitude=' +
+            yorkLatitude +
+
+            '&longitude=' +
+            yorkLongitude +
+
+            '&current=' +
+            'temperature_2m,' +
+            'apparent_temperature,' +
+            'weather_code,' +
+            'wind_speed_10m,' +
+            'precipitation,' +
+            'is_day' +
+
+            '&daily=' +
+            'temperature_2m_max,' +
+            'temperature_2m_min,' +
+            'weather_code,' +
+            'precipitation_probability_max,' +
+            'sunrise,' +
+            'sunset' +
+
             '&forecast_days=4' +
+
             '&timezone=Europe%2FLondon';
 
 
@@ -642,7 +934,9 @@ async function loadWeather() {
 
 
         if (!response.ok) {
-            throw new Error('Weather request failed');
+            throw new Error(
+                'Weather request failed'
+            );
         }
 
 
@@ -658,31 +952,128 @@ async function loadWeather() {
             data.daily;
 
 
+        const icon =
+            weatherIcon(
+                current.weather_code,
+                current.is_day === 1
+            );
+
+
         main.innerHTML = `
 
             <div class="weather-main">
 
-                <div>
-                    <div class="weather-temp">
-                        ${Math.round(current.temperature_2m)}°C
+                <div class="weather-left">
+
+                    <div class="weather-icon">
+                        ${icon}
                     </div>
 
-                    <div class="weather-condition">
-                        ${weatherDescription(current.weather_code)}
+                    <div>
+
+                        <div class="weather-temp">
+                            ${Math.round(
+                                current.temperature_2m
+                            )}°C
+                        </div>
+
+                        <div class="weather-condition">
+                            ${weatherDescription(
+                                current.weather_code
+                            )}
+                        </div>
+
                     </div>
+
                 </div>
+
 
                 <div class="weather-details">
 
-                    H: ${Math.round(daily.temperature_2m_max[0])}°C
-                    &nbsp;&nbsp;
-                    L: ${Math.round(daily.temperature_2m_min[0])}°C
+                    <strong>
+                        H ${Math.round(
+                            daily.temperature_2m_max[0]
+                        )}°
+                    </strong>
+
+                    &nbsp;
+
+                    <strong>
+                        L ${Math.round(
+                            daily.temperature_2m_min[0]
+                        )}°
+                    </strong>
 
                     <br>
 
-                    Wind:
-                    ${Math.round(current.wind_speed_10m)}
-                    km/h
+                    Feels like
+                    ${Math.round(
+                        current.apparent_temperature
+                    )}°
+
+                </div>
+
+            </div>
+
+
+            <div class="weather-strip">
+
+                <div class="weather-stat">
+
+                    <div class="weather-stat-label">
+                        Wind
+                    </div>
+
+                    <div class="weather-stat-value">
+                        ${Math.round(
+                            current.wind_speed_10m
+                        )} km/h
+                    </div>
+
+                </div>
+
+
+                <div class="weather-stat">
+
+                    <div class="weather-stat-label">
+                        Rain
+                    </div>
+
+                    <div class="weather-stat-value">
+                        ${Math.round(
+                            daily.precipitation_probability_max[0]
+                        )}%
+                    </div>
+
+                </div>
+
+
+                <div class="weather-stat">
+
+                    <div class="weather-stat-label">
+                        Sunrise
+                    </div>
+
+                    <div class="weather-stat-value">
+                        ${formatTime(
+                            daily.sunrise[0]
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div class="weather-stat">
+
+                    <div class="weather-stat-label">
+                        Sunset
+                    </div>
+
+                    <div class="weather-stat-value">
+                        ${formatTime(
+                            daily.sunset[0]
+                        )}
+                    </div>
 
                 </div>
 
@@ -700,21 +1091,11 @@ async function loadWeather() {
             i++
         ) {
 
-            const date =
-                new Date(
-                    daily.time[i] + 'T12:00:00'
+            const forecastIcon =
+                weatherIcon(
+                    daily.weather_code[i],
+                    true
                 );
-
-
-            const dayName =
-                i === 0
-                    ? 'Today'
-                    : date.toLocaleDateString(
-                        'en-GB',
-                        {
-                            weekday: 'short'
-                        }
-                    );
 
 
             forecast.innerHTML += `
@@ -722,22 +1103,37 @@ async function loadWeather() {
                 <div class="weather-day">
 
                     <div class="weather-day-name">
-                        ${dayName}
-                    </div>
-
-                    <div>
-                        ${weatherDescription(
-                            daily.weather_code[i]
+                        ${shortDayName(
+                            daily.time[i],
+                            i
                         )}
                     </div>
 
+                    <div class="weather-day-icon">
+                        ${forecastIcon}
+                    </div>
+
                     <div class="weather-day-temp">
+
                         ${Math.round(
                             daily.temperature_2m_max[i]
-                        )}° /
+                        )}°
+
+                        /
+
                         ${Math.round(
                             daily.temperature_2m_min[i]
                         )}°
+
+                    </div>
+
+                    <div class="weather-day-rain">
+
+                        💧
+                        ${Math.round(
+                            daily.precipitation_probability_max[i]
+                        )}%
+
                     </div>
 
                 </div>
@@ -751,12 +1147,18 @@ async function loadWeather() {
     catch (error) {
 
         main.innerHTML = `
+
             <div class="weather-status">
+
                 Weather unavailable
+
             </div>
+
         `;
 
+
         forecast.innerHTML = '';
+
 
         console.error(
             'Weather error:',
@@ -781,7 +1183,8 @@ setInterval(
 
 /* =====================================================
    BBC LOCAL NEWS
-   York & North Yorkshire RSS
+
+   BBC North Yorkshire RSS -> RSS2JSON
    ===================================================== */
 
 const bbcFeed =
@@ -791,24 +1194,31 @@ const bbcFeed =
 async function loadLocalNews() {
 
     const container =
-        document.getElementById('local-news');
+        document.getElementById(
+            'local-news'
+        );
 
 
     try {
 
-        const proxy =
-            'https://api.allorigins.win/get?url=' +
-            encodeURIComponent(bbcFeed);
+        const apiUrl =
+            'https://api.rss2json.com/v1/api.json?rss_url='
+            +
+            encodeURIComponent(
+                bbcFeed
+            );
 
 
         const response =
-            await fetch(proxy);
+            await fetch(apiUrl);
 
 
         if (!response.ok) {
+
             throw new Error(
-                'BBC feed request failed'
+                'RSS2JSON request failed'
             );
+
         }
 
 
@@ -816,67 +1226,38 @@ async function loadLocalNews() {
             await response.json();
 
 
-        const parser =
-            new DOMParser();
+        if (
+            data.status !== 'ok'
+            ||
+            !data.items
+            ||
+            !data.items.length
+        ) {
 
-
-        const xml =
-            parser.parseFromString(
-                data.contents,
-                'text/xml'
-            );
-
-
-        const items =
-            Array.from(
-                xml.querySelectorAll('item')
-            );
-
-
-        if (!items.length) {
             throw new Error(
                 'No BBC stories found'
             );
+
         }
 
 
         container.innerHTML = '';
 
 
-        items
+        data.items
             .slice(0, 8)
             .forEach(item => {
-
-                const title =
-                    item.querySelector('title')
-                        ?.textContent
-                        ?.trim();
-
-
-                const link =
-                    item.querySelector('link')
-                        ?.textContent
-                        ?.trim();
-
-
-                const pubDate =
-                    item.querySelector('pubDate')
-                        ?.textContent
-                        ?.trim();
-
-
-                if (!title || !link) {
-                    return;
-                }
 
 
                 let dateText = '';
 
 
-                if (pubDate) {
+                if (item.pubDate) {
 
                     const date =
-                        new Date(pubDate);
+                        new Date(
+                            item.pubDate
+                        );
 
 
                     if (!isNaN(date)) {
@@ -897,28 +1278,69 @@ async function loadLocalNews() {
                 }
 
 
-                container.innerHTML += `
+                const newsItem =
+                    document.createElement(
+                        'div'
+                    );
 
-                    <div class="news-item">
 
-                        <a
-                            href="${link}"
-                            target="_blank"
-                            rel="noopener noreferrer">
-                            ${title}
-                        </a>
+                newsItem.className =
+                    'news-item';
 
-                        ${
-                            dateText
-                            ? `<div class="news-date">
-                                ${dateText}
-                               </div>`
-                            : ''
-                        }
 
-                    </div>
+                const link =
+                    document.createElement(
+                        'a'
+                    );
 
-                `;
+
+                link.href =
+                    item.link;
+
+
+                link.target =
+                    '_blank';
+
+
+                link.rel =
+                    'noopener noreferrer';
+
+
+                link.textContent =
+                    item.title;
+
+
+                newsItem.appendChild(
+                    link
+                );
+
+
+                if (dateText) {
+
+                    const dateElement =
+                        document.createElement(
+                            'div'
+                        );
+
+
+                    dateElement.className =
+                        'news-date';
+
+
+                    dateElement.textContent =
+                        dateText;
+
+
+                    newsItem.appendChild(
+                        dateElement
+                    );
+
+                }
+
+
+                container.appendChild(
+                    newsItem
+                );
 
             });
 
@@ -935,12 +1357,13 @@ async function loadLocalNews() {
                 <br><br>
 
                 <small>
-                    The feed may be temporarily unavailable.
+                    The news feed is temporarily unavailable.
                 </small>
 
             </div>
 
         `;
+
 
         console.error(
             'BBC local news error:',
@@ -955,12 +1378,13 @@ async function loadLocalNews() {
 loadLocalNews();
 
 
-/* Refresh BBC local headlines every 10 minutes */
+/* Refresh local headlines every 10 minutes */
 
 setInterval(
     loadLocalNews,
     10 * 60 * 1000
 );
+
 
 </script>
 
