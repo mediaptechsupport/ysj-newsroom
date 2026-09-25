@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -30,12 +31,9 @@ body {
 header {
     height: 60px;
     background: #222;
-
     display: flex;
     align-items: center;
-
     padding: 0 20px;
-
     font-size: 26px;
     font-weight: bold;
 }
@@ -58,11 +56,8 @@ main {
     grid-template-areas:
 
         "sky weather"
-
         "sky clocks"
-
         "local bbc"
-
         "radio bbc";
 
     gap: 10px;
@@ -183,6 +178,8 @@ main {
     height: calc(100% - 38px);
 
     background: #111;
+
+    padding: 12px;
 }
 
 
@@ -190,17 +187,19 @@ main {
 
     width: 100%;
 
-    height: 45px;
+    height: 42px;
 
     background: #333;
 
     color: white;
 
-    border: 0;
+    border: 1px solid #555;
 
     padding: 0 12px;
 
     font-size: 16px;
+
+    margin-bottom: 15px;
 }
 
 
@@ -208,12 +207,9 @@ main {
 
     width: 100%;
 
-    height: calc(100% - 45px);
-
-    border: 0;
+    height: 45px;
 
     display: block;
-
 }
 
 </style>
@@ -300,45 +296,45 @@ main {
 
     </section>
 
+
+
     <!-- RADIO -->
 
-<section class="panel radio-panel">
+    <section class="panel radio-panel">
 
-    <div class="panel-title">
-        RADIO
-    </div>
+        <div class="panel-title">
+            RADIO
+        </div>
 
-    <div class="radio-container">
+        <div class="radio-container">
 
-        <select id="radioStation" onchange="changeRadio()">
+            <select id="radioStation" onchange="changeRadio()">
 
-            <option value="bbc-york">
-                BBC Radio York
-            </option>
+                <option value="bbc-york">
+                    BBC Radio York
+                </option>
 
-            <option value="bbc-5live">
-                BBC Radio 5 Live
-            </option>
+                <option value="bbc-5live">
+                    BBC Radio 5 Live
+                </option>
 
-            <option value="yorkmix">
-                YorkMix Radio
-            </option>
+                <option value="yorkmix">
+                    YorkMix Radio
+                </option>
 
-        </select>
+            </select>
 
 
-        <audio
-            id="radioPlayer"
-            controls
-            preload="none">
+            <audio
+                id="radioPlayer"
+                class="radio-player"
+                controls
+                preload="none">
+            </audio>
 
-        </audio>
+        </div>
 
-    </div>
-
-</section>
-
-    
+    </section>
 
 
 
@@ -373,11 +369,14 @@ main {
 
 <script>
 
-/* =========================================
-   BBC NEWS LIVE
-   ========================================= */
 
-const video = document.getElementById('bbc-video');
+/* =====================================================
+   BBC NEWS LIVE
+   ===================================================== */
+
+const video =
+    document.getElementById('bbc-video');
+
 
 const streamUrl =
     'https://vs-hls-push-ww.live.fastly.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:bbc_news_channel_hd/t=3840/v=pv14/b=5070016/main.m3u8';
@@ -402,43 +401,130 @@ else if (
 
 
 
-/* =========================================
-   RADIO SELECTOR
-   ========================================= */
+/* =====================================================
+   RADIO
+   ===================================================== */
+
+const radioPlayer =
+    document.getElementById('radioPlayer');
+
+
+let radioHls = null;
+
 
 function changeRadio() {
 
     const station =
-        document.getElementById('radioStation');
-
-    const player =
-        document.getElementById('radioPlayer');
+        document.getElementById('radioStation').value;
 
 
-    if (station.value === 'yorkmix') {
+    /* Stop existing radio */
 
-        player.src =
-            'https://www.yorkmix.com/radio';
+    if (radioHls) {
+
+        radioHls.destroy();
+
+        radioHls = null;
+
+    }
+
+    radioPlayer.pause();
+
+    radioPlayer.removeAttribute('src');
+
+    radioPlayer.load();
+
+
+
+    /* ---------------------------------------------
+       BBC RADIO YORK
+       --------------------------------------------- */
+
+    if (station === 'bbc-york') {
+
+        const radioUrl =
+            'https://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_york/bbc_radio_york.isml/bbc_radio_york-audio%3d96000.norewind.m3u8';
+
+
+        if (Hls.isSupported()) {
+
+            radioHls = new Hls();
+
+            radioHls.loadSource(radioUrl);
+
+            radioHls.attachMedia(radioPlayer);
+
+        }
+
+        else if (
+            radioPlayer.canPlayType(
+                'application/vnd.apple.mpegurl'
+            )
+        ) {
+
+            radioPlayer.src = radioUrl;
+
+        }
 
     }
 
 
-    else if (station.value === 'bbc-york') {
 
-        player.src =
-            'https://www.bbc.co.uk/sounds/play/live:bbc_radio_york';
+    /* ---------------------------------------------
+       BBC RADIO 5 LIVE
+       --------------------------------------------- */
+
+    else if (station === 'bbc-5live') {
+
+        const radioUrl =
+            'https://as-hls-ww-live.akamaized.net/pool_904/live/ww/bbc_radio_five_live/bbc_radio_five_live.isml/bbc_radio_five_live-audio%3d96000.norewind.m3u8';
+
+
+        if (Hls.isSupported()) {
+
+            radioHls = new Hls();
+
+            radioHls.loadSource(radioUrl);
+
+            radioHls.attachMedia(radioPlayer);
+
+        }
+
+        else if (
+            radioPlayer.canPlayType(
+                'application/vnd.apple.mpegurl'
+            )
+        ) {
+
+            radioPlayer.src = radioUrl;
+
+        }
 
     }
 
 
-    else if (station.value === 'bbc-5live') {
 
-        player.src =
-            'https://www.bbc.co.uk/sounds/play/live:bbc_5live';
+    /* ---------------------------------------------
+       YORKMIX
+       --------------------------------------------- */
+
+    else if (station === 'yorkmix') {
+
+        /*
+           YorkMix does not currently expose a
+           verified direct audio URL on its public
+           radio page, so leave the player empty
+           rather than using a broken webpage URL.
+        */
+
+        radioPlayer.removeAttribute('src');
+
+        radioPlayer.load();
 
     }
 
 }
+
 
 </script>
 
