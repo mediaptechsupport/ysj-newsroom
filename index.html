@@ -137,7 +137,8 @@ main {
    ===================================================== */
 
 .weather-content {
-    height: calc(100% - 38px);
+    height: auto;
+    min-height: 0;
     padding: 8px 10px;
     background:
         linear-gradient(
@@ -147,7 +148,7 @@ main {
             #111 100%
         );
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .weather-content::after {
