@@ -300,47 +300,45 @@ main {
 
     </section>
 
-
-
     <!-- RADIO -->
 
-    <section class="panel radio-panel">
+<section class="panel radio-panel">
 
-        <div class="panel-title">
-            RADIO
-        </div>
+    <div class="panel-title">
+        RADIO
+    </div>
 
-        <div class="radio-container">
+    <div class="radio-container">
 
-            <select
-                id="radioStation"
-                onchange="changeRadio()">
+        <select id="radioStation" onchange="changeRadio()">
 
-                <option value="yorkmix">
-                    YorkMix Radio
-                </option>
+            <option value="bbc-york">
+                BBC Radio York
+            </option>
 
-                <option value="bbc-york">
-                    BBC Radio York
-                </option>
+            <option value="bbc-5live">
+                BBC Radio 5 Live
+            </option>
 
-                <option value="bbc-5live">
-                    BBC Radio 5 Live
-                </option>
+            <option value="yorkmix">
+                YorkMix Radio
+            </option>
 
-            </select>
+        </select>
 
 
-            <iframe
-                id="radioPlayer"
-                class="radio-player"
-                src="https://www.yorkmix.com/radio"
-                allow="autoplay">
-            </iframe>
+        <audio
+            id="radioPlayer"
+            controls
+            preload="none">
 
-        </div>
+        </audio>
 
-    </section>
+    </div>
+
+</section>
+
+    
 
 
 
