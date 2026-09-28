@@ -502,11 +502,21 @@ main {
     font-size: 14px;
 }
 
-.radio-message {
+.radio-player {
+    width: 100%;
+    margin-top: 12px;
+}
+
+.radio-player audio {
+    width: 100%;
+    height: 42px;
+}
+
+.radio-status {
     text-align: center;
-    color: #777;
-    margin-top: 18px;
-    font-size: 14px;
+    color: #999;
+    margin-top: 8px;
+    font-size: 12px;
 }
 
 
@@ -664,24 +674,15 @@ main {
         <div class="radio-container">
 
             <select id="radioStation">
-
-                <option>
-                    BBC Radio York
-                </option>
-
-                <option>
-                    BBC Radio 5 Live
-                </option>
-
-                <option>
-                    YorkMix Radio
-                </option>
-
+                <option value="bbc_radio_york">BBC Radio York</option>
+                <option value="bbc_radio_five_live">BBC Radio 5 Live</option>
             </select>
 
-            <div class="radio-message">
-                Radio player — coming next
+            <div class="radio-player">
+                <audio id="radio-audio" controls preload="none"></audio>
             </div>
+
+            <div id="radio-status" class="radio-status">Press play to start live radio</div>
 
         </div>
 
@@ -753,6 +754,73 @@ else if (
     video.src = streamUrl;
 
 }
+
+
+/* =====================================================
+   RADIO PLAYER
+   ===================================================== */
+
+const radioAudio = document.getElementById('radio-audio');
+const radioStation = document.getElementById('radioStation');
+const radioStatus = document.getElementById('radio-status');
+
+const radioStreams = {
+    bbc_radio_york:
+        'https://as-hls-ww-live.akamaized.net/pool_90848428/live/ww/bbc_radio_york/bbc_radio_york.isml/bbc_radio_york-audio%3d96000.norewind.m3u8',
+    bbc_radio_five_live:
+        'https://as-hls-ww-live.akamaized.net/pool_89021708/live/ww/bbc_radio_five_live/bbc_radio_five_live.isml/bbc_radio_five_live-audio%3d96000.norewind.m3u8'
+};
+
+let radioHls = null;
+
+function loadRadioStream() {
+
+    const stream = radioStreams[radioStation.value];
+
+    if (!stream) return;
+
+    if (radioHls) {
+        radioHls.destroy();
+        radioHls = null;
+    }
+
+    radioAudio.pause();
+    radioAudio.removeAttribute('src');
+    radioAudio.load();
+    radioStatus.textContent = 'Press play to start live radio';
+
+    if (Hls.isSupported()) {
+
+        radioHls = new Hls({
+            enableWorker: true,
+            lowLatencyMode: true
+        });
+
+        radioHls.loadSource(stream);
+        radioHls.attachMedia(radioAudio);
+
+        radioHls.on(Hls.Events.MANIFEST_PARSED, () => {
+            radioStatus.textContent = 'Live stream ready';
+        });
+
+        radioHls.on(Hls.Events.ERROR, (event, data) => {
+            if (data.fatal) {
+                radioStatus.textContent = 'Radio stream unavailable — try again';
+            }
+        });
+
+    } else if (radioAudio.canPlayType('application/vnd.apple.mpegurl')) {
+
+        radioAudio.src = stream;
+        radioStatus.textContent = 'Live stream ready';
+
+    } else {
+        radioStatus.textContent = 'This browser cannot play the live radio stream';
+    }
+}
+
+radioStation.addEventListener('change', loadRadioStream);
+loadRadioStream();
 
 
 /* =====================================================
