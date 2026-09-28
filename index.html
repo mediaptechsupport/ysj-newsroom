@@ -361,6 +361,47 @@ main {
     justify-content: center;
 }
 
+    /* CLOCK LAYOUT */
+
+.clocks-content {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.clocks-content .clock:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1 / 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.clocks-content .clock:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.clocks-content .clock:nth-child(3) {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.clocks-content .clock:nth-child(4) {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.clocks-content .clock:nth-child(1) .clock-time {
+    font-size: 42px;
+}
+
+.clocks-content .clock:nth-child(n+2) .clock-time {
+    font-size: 20px;
+}
+
 
 /* =====================================================
    BBC LOCAL NEWS
