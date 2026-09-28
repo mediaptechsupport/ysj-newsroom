@@ -26,9 +26,7 @@ body {
 }
 
 
-/* =====================================================
-   HEADER
-   ===================================================== */
+/* HEADER */
 
 header {
     height: 60px;
@@ -41,9 +39,7 @@ header {
 }
 
 
-/* =====================================================
-   MAIN GRID
-   ===================================================== */
+/* MAIN GRID */
 
 main {
     display: grid;
@@ -70,9 +66,7 @@ main {
 }
 
 
-/* =====================================================
-   PANELS
-   ===================================================== */
+/* PANELS */
 
 .panel {
     background: #222;
@@ -90,9 +84,7 @@ main {
 }
 
 
-/* =====================================================
-   GRID AREAS
-   ===================================================== */
+/* GRID AREAS */
 
 .sky-panel {
     grid-area: sky;
@@ -119,9 +111,7 @@ main {
 }
 
 
-/* =====================================================
-   SKY NEWS
-   ===================================================== */
+/* SKY NEWS */
 
 .sky-frame {
     display: block;
@@ -131,9 +121,7 @@ main {
 }
 
 
-/* =====================================================
-   BBC NEWS
-   ===================================================== */
+/* BBC NEWS */
 
 .bbc-video {
     display: block;
@@ -152,7 +140,6 @@ main {
     height: auto;
     min-height: 0;
     padding: 8px 10px;
-
     background:
         linear-gradient(
             135deg,
@@ -160,7 +147,6 @@ main {
             #23485b 50%,
             #111 100%
         );
-
     position: relative;
     overflow: visible;
 }
@@ -168,14 +154,10 @@ main {
 .weather-content::after {
     content: "";
     position: absolute;
-
     width: 130px;
     height: 130px;
-
     border-radius: 50%;
-
     background: rgba(255,255,255,0.04);
-
     right: -40px;
     top: -60px;
 }
@@ -187,10 +169,8 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     position: relative;
     z-index: 1;
-
     height: 62px;
 }
 
@@ -233,12 +213,9 @@ main {
 
 .weather-strip {
     margin-top: 6px;
-
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-
     gap: 4px;
-
     position: relative;
     z-index: 1;
 }
@@ -246,9 +223,7 @@ main {
 .weather-stat {
     background: rgba(0,0,0,0.28);
     border-radius: 4px;
-
     padding: 4px 3px;
-
     text-align: center;
 }
 
@@ -270,12 +245,9 @@ main {
 
 .weather-forecast {
     margin-top: 5px;
-
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-
     gap: 4px;
-
     position: relative;
     z-index: 1;
 }
@@ -283,11 +255,8 @@ main {
 .weather-day {
     background: rgba(0,0,0,0.32);
     border-radius: 4px;
-
     padding: 3px;
-
     text-align: center;
-
     font-size: 9px;
     line-height: 1.05;
 }
@@ -299,14 +268,14 @@ main {
 }
 
 .weather-day-icon {
-    font-size: 20px;
+    font-size: 16px;
     line-height: 1;
 }
 
 .weather-day-temp {
     margin-top: 2px;
     font-weight: bold;
-    font-size: 11px;
+    font-size: 10px;
 }
 
 .weather-day-rain {
@@ -327,111 +296,43 @@ main {
 
 
 /* =====================================================
-   WORLD CLOCKS
+   UK CLOCK
    ===================================================== */
 
 .clocks-content {
     height: calc(100% - 38px);
-
-    padding: 8px;
-
-    background: #111;
-
-    display: grid;
-
-    grid-template-columns: 1.5fr 1fr;
-
-    grid-template-rows:
-        repeat(3, 1fr);
-
-    gap: 6px;
-}
-
-
-/* ALL CLOCKS */
-
-.clock {
-    background: #222;
-
-    border-radius: 4px;
-
-    padding: 6px 10px;
+    background:
+        radial-gradient(circle at 50% 35%, #303030 0%, #171717 65%, #111 100%);
 
     display: flex;
-
     align-items: center;
-
-    justify-content: space-between;
-
-    min-width: 0;
-    min-height: 0;
-}
-
-
-/* LONDON — LARGE */
-
-.clocks-content .clock:nth-child(1) {
-    grid-column: 1;
-    grid-row: 1 / 4;
-
+    justify-content: center;
     flex-direction: column;
 
-    justify-content: center;
-
-    align-items: center;
+    position: relative;
 }
 
-.clocks-content .clock:nth-child(1) .clock-city {
+.clock-label {
     font-size: 18px;
-    margin-bottom: 5px;
-}
-
-.clocks-content .clock:nth-child(1) .clock-time {
-    font-size: 42px;
-}
-
-
-/* PARIS */
-
-.clocks-content .clock:nth-child(2) {
-    grid-column: 2;
-    grid-row: 1;
-}
-
-
-/* WASHINGTON */
-
-.clocks-content .clock:nth-child(3) {
-    grid-column: 2;
-    grid-row: 2;
-}
-
-
-/* SYDNEY */
-
-.clocks-content .clock:nth-child(4) {
-    grid-column: 2;
-    grid-row: 3;
-}
-
-
-/* SMALL CLOCKS */
-
-.clocks-content .clock:nth-child(n+2) .clock-city {
-    font-size: 13px;
-}
-
-.clocks-content .clock:nth-child(n+2) .clock-time {
-    font-size: 18px;
-}
-
-.clock-city {
     font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 2px;
 }
 
 .clock-time {
+    font-size: 56px;
+    line-height: 1;
     font-weight: bold;
     font-variant-numeric: tabular-nums;
+    letter-spacing: 1px;
+}
+
+.clock-date {
+    margin-top: 7px;
+    font-size: 13px;
+    color: #888;
 }
 
 
@@ -441,54 +342,81 @@ main {
 
 .local-content {
     height: calc(100% - 38px);
-
-    background: #111;
-
+    background: #101010;
     overflow-y: auto;
+    padding: 5px;
 }
 
 .news-item {
-    padding: 8px 12px;
+    position: relative;
 
-    border-bottom: 1px solid #333;
+    margin: 4px 0;
+    padding: 8px 10px 7px 14px;
 
-    transition: background 0.15s;
+    background: #1c1c1c;
+    border: 1px solid #292929;
+    border-left: 3px solid #c00;
+    border-radius: 3px;
+
+    transition:
+        background 0.15s,
+        border-color 0.15s;
 }
 
 .news-item:hover {
     background: #292929;
+    border-left-color: #e22;
+}
+
+.news-item:first-child {
+    background: #242424;
+    border-left-width: 4px;
+}
+
+.news-item:first-child a {
+    font-size: 16px;
 }
 
 .news-item a {
-    color: white;
-
+    color: #f2f2f2 !important;
     text-decoration: none;
-
-    font-size: 15px;
-
-    line-height: 1.25;
-
+    font-size: 14px;
+    line-height: 1.3;
     display: block;
 }
 
 .news-item a:hover {
-    text-decoration: underline;
+    color: white !important;
+    text-decoration: none;
 }
 
 .news-date {
     color: #777;
-
-    font-size: 11px;
-
+    font-size: 10px;
     margin-top: 4px;
 }
 
 .news-status {
     color: #777;
-
     text-align: center;
-
     padding: 25px 10px;
+}
+
+.local-content::-webkit-scrollbar {
+    width: 7px;
+}
+
+.local-content::-webkit-scrollbar-track {
+    background: #181818;
+}
+
+.local-content::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+}
+
+.local-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 
@@ -498,19 +426,15 @@ main {
 
 .radio-container {
     height: calc(100% - 38px);
-
     background: #111;
-
     padding: 12px;
 }
 
 .radio-container select {
     width: 100%;
-
     height: 42px;
 
     background: #333;
-
     color: white;
 
     border: 1px solid #555;
@@ -522,18 +446,13 @@ main {
 
 .radio-message {
     text-align: center;
-
     color: #777;
-
     margin-top: 25px;
-
     font-size: 16px;
 }
 
 
-/* =====================================================
-   SCROLLBAR
-   ===================================================== */
+/* SCROLLBAR */
 
 .local-content::-webkit-scrollbar {
     width: 7px;
@@ -608,9 +527,8 @@ main {
 
             </div>
 
-            <div
-                id="weather-forecast"
-                class="weather-forecast">
+            <div id="weather-forecast"
+                 class="weather-forecast">
             </div>
 
         </div>
@@ -620,74 +538,27 @@ main {
 
 
     <!-- =================================================
-         WORLD CLOCKS
+         UK TIME
          ================================================= -->
 
     <section class="panel clocks-panel">
 
         <div class="panel-title">
-            WORLD CLOCKS
+            UK TIME
         </div>
 
         <div class="clocks-content">
 
-            <div class="clock">
-
-                <div class="clock-city">
-                    London
-                </div>
-
-                <div
-                    id="clock-london"
-                    class="clock-time">
-                    --:--:--
-                </div>
-
+            <div class="clock-label">
+                YORK / UK
             </div>
 
-
-            <div class="clock">
-
-                <div class="clock-city">
-                    Paris
-                </div>
-
-                <div
-                    id="clock-paris"
-                    class="clock-time">
-                    --:--:--
-                </div>
-
+            <div id="clock-london" class="clock-time">
+                --:--:--
             </div>
 
-
-            <div class="clock">
-
-                <div class="clock-city">
-                    Washington D.C.
-                </div>
-
-                <div
-                    id="clock-washington"
-                    class="clock-time">
-                    --:--:--
-                </div>
-
-            </div>
-
-
-            <div class="clock">
-
-                <div class="clock-city">
-                    Sydney
-                </div>
-
-                <div
-                    id="clock-sydney"
-                    class="clock-time">
-                    --:--:--
-                </div>
-
+            <div id="clock-date" class="clock-date">
+                Loading...
             </div>
 
         </div>
@@ -706,9 +577,8 @@ main {
             BBC LOCAL — YORK & NORTH YORKSHIRE
         </div>
 
-        <div
-            id="local-news"
-            class="local-content">
+        <div id="local-news"
+             class="local-content">
 
             <div class="news-status">
                 Loading BBC local news...
@@ -784,9 +654,7 @@ main {
 
 
 
-<!-- =====================================================
-     HLS.JS
-     ===================================================== -->
+<!-- HLS.JS -->
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.7.3/dist/hls.min.js"></script>
 
@@ -817,7 +685,6 @@ if (Hls.isSupported()) {
     hls.attachMedia(video);
 
 }
-
 else if (
     video.canPlayType('application/vnd.apple.mpegurl')
 ) {
@@ -828,67 +695,57 @@ else if (
 
 
 /* =====================================================
-   WORLD CLOCKS
+   UK CLOCK
    ===================================================== */
 
-function updateClocks() {
-
-    const clocks = {
-
-        'clock-london':
-            'Europe/London',
-
-        'clock-paris':
-            'Europe/Paris',
-
-        'clock-washington':
-            'America/New_York',
-
-        'clock-sydney':
-            'Australia/Sydney'
-
-    };
-
+function updateClock() {
 
     const now = new Date();
 
+    const timeElement =
+        document.getElementById('clock-london');
 
-    Object.entries(clocks).forEach(
-        ([id, timezone]) => {
+    const dateElement =
+        document.getElementById('clock-date');
 
-            const element =
-                document.getElementById(id);
+    timeElement.textContent =
+        new Intl.DateTimeFormat(
+            'en-GB',
+            {
+                timeZone: 'Europe/London',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }
+        ).format(now);
 
-
-            element.textContent =
-                new Intl.DateTimeFormat(
-                    'en-GB',
-                    {
-                        timeZone: timezone,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                        hour12: false
-                    }
-                ).format(now);
-
-        }
-    );
+    dateElement.textContent =
+        new Intl.DateTimeFormat(
+            'en-GB',
+            {
+                timeZone: 'Europe/London',
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            }
+        ).format(now);
 
 }
 
 
-updateClocks();
-
+updateClock();
 
 setInterval(
-    updateClocks,
+    updateClock,
     1000
 );
 
 
 /* =====================================================
-   WEATHER — YORK
+   WEATHER
+   YORK
    ===================================================== */
 
 const yorkLatitude = 53.9599;
@@ -901,25 +758,45 @@ function weatherDescription(code) {
     const descriptions = {
 
         0: 'Clear sky',
+
         1: 'Mainly clear',
+
         2: 'Partly cloudy',
+
         3: 'Overcast',
+
         45: 'Fog',
+
         48: 'Freezing fog',
+
         51: 'Light drizzle',
+
         53: 'Drizzle',
+
         55: 'Heavy drizzle',
+
         61: 'Light rain',
+
         63: 'Rain',
+
         65: 'Heavy rain',
+
         71: 'Light snow',
+
         73: 'Snow',
+
         75: 'Heavy snow',
+
         80: 'Rain showers',
+
         81: 'Rain showers',
+
         82: 'Heavy rain showers',
+
         95: 'Thunderstorm',
+
         96: 'Thunderstorm',
+
         99: 'Thunderstorm'
 
     };
@@ -935,44 +812,32 @@ function weatherIcon(code, isDay = true) {
 
     if (!isDay) {
 
-        if (code === 0)
-            return '🌙';
+        if (code === 0) return '🌙';
 
-        if (code <= 3)
-            return '☁️';
+        if (code <= 3) return '☁️';
 
     }
 
 
-    if (code === 0)
-        return '☀️';
+    if (code === 0) return '☀️';
 
-    if (code === 1)
-        return '🌤️';
+    if (code === 1) return '🌤️';
 
-    if (code === 2)
-        return '⛅';
+    if (code === 2) return '⛅';
 
-    if (code === 3)
-        return '☁️';
+    if (code === 3) return '☁️';
 
-    if (code === 45 || code === 48)
-        return '🌫️';
+    if (code === 45 || code === 48) return '🌫️';
 
-    if (code >= 51 && code <= 55)
-        return '🌦️';
+    if (code >= 51 && code <= 55) return '🌦️';
 
-    if (code >= 61 && code <= 65)
-        return '🌧️';
+    if (code >= 61 && code <= 65) return '🌧️';
 
-    if (code >= 71 && code <= 75)
-        return '🌨️';
+    if (code >= 71 && code <= 75) return '🌨️';
 
-    if (code >= 80 && code <= 82)
-        return '🌦️';
+    if (code >= 80 && code <= 82) return '🌦️';
 
-    if (code >= 95)
-        return '⛈️';
+    if (code >= 95) return '⛈️';
 
     return '🌤️';
 
@@ -1075,11 +940,9 @@ async function loadWeather() {
 
 
         if (!response.ok) {
-
             throw new Error(
                 'Weather request failed'
             );
-
         }
 
 
@@ -1287,13 +1150,14 @@ async function loadWeather() {
 
 
     }
-
     catch (error) {
 
         main.innerHTML = `
 
             <div class="weather-status">
+
                 Weather unavailable
+
             </div>
 
         `;
@@ -1488,7 +1352,6 @@ async function loadLocalNews() {
 
 
     }
-
     catch (error) {
 
         container.innerHTML = `
