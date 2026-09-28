@@ -243,12 +243,12 @@ main {
 }
 
 
-/* TODAY + THREE DAYS AHEAD */
+/* TODAY */
 
 .weather-forecast {
     margin-top: 5px;
     display: grid;
-    grid-template-columns: 1.45fr repeat(3, 1fr);
+    grid-template-columns: 1fr;
     gap: 4px;
     position: relative;
     z-index: 1;
@@ -273,8 +273,8 @@ main {
 
 .weather-hourly {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 3px;
 }
 
 .weather-hour {
@@ -1144,19 +1144,19 @@ async function loadWeather() {
 
         forecast.innerHTML = '';
 
-        /* A more useful TODAY view: four daytime snapshots. */
+        /* TODAY: show six useful hourly snapshots from now through the day. */
         const nowHour = new Date().getHours();
         const todayHours = [];
 
         for (let i = 0; i < hourly.time.length; i++) {
             const hour = new Date(hourly.time[i]).getHours();
-            if (hour >= Math.max(nowHour, 8) && hour <= 20 && todayHours.length < 4) {
+            if (hour >= Math.max(nowHour, 8) && hour <= 20 && todayHours.length < 6) {
                 todayHours.push(i);
             }
         }
 
-        if (todayHours.length < 4) {
-            for (let i = 0; i < hourly.time.length && todayHours.length < 4; i++) {
+        if (todayHours.length < 6) {
+            for (let i = 0; i < hourly.time.length && todayHours.length < 6; i++) {
                 if (!todayHours.includes(i)) todayHours.push(i);
             }
         }
@@ -1183,21 +1183,6 @@ async function loadWeather() {
                 <div class="weather-hourly">${hourlyHtml}</div>
             </div>
         `;
-
-        for (let i = 1; i < 4; i++) {
-            const forecastIcon = weatherIcon(daily.weather_code[i], true);
-
-            forecast.innerHTML += `
-                <div class="weather-day">
-                    <div class="weather-day-name">${shortDayName(daily.time[i], i)}</div>
-                    <div class="weather-day-icon">${forecastIcon}</div>
-                    <div class="weather-day-temp">
-                        ${Math.round(daily.temperature_2m_max[i])}° / ${Math.round(daily.temperature_2m_min[i])}°
-                    </div>
-                    <div class="weather-day-rain">💧 ${Math.round(daily.precipitation_probability_max[i])}%</div>
-                </div>
-            `;
-        }
 
 
     }
