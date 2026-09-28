@@ -502,24 +502,15 @@ main {
     font-size: 14px;
 }
 
-.radio-player {
-    width: 100%;
-    margin-top: 12px;
-}
-
-.radio-player video {
-    width: 100%;
-    height: 42px;
-    display: block;
-    background: #000;
-}
-
-.radio-status {
-    text-align: center;
-    color: #999;
-    margin-top: 8px;
-    font-size: 12px;
-}
+.radio-player-wrap { padding: 10px 12px 12px; }
+.radio-stations { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.radio-station { border:1px solid #555; border-radius:5px; background:#171717; color:white; min-height:52px; cursor:pointer; font-weight:bold; font-size:11px; line-height:1.1; }
+.radio-station.active { border-color:#fff; background:#333; }
+.radio-station small { display:block; font-size:8px; font-weight:normal; margin-top:3px; color:#bbb; }
+.radio-controls { display:flex; align-items:center; gap:8px; margin-top:10px; }
+.radio-controls button { border:0; border-radius:4px; background:#444; color:white; padding:7px 11px; font-weight:bold; cursor:pointer; }
+.radio-controls input[type="range"] { flex:1; }
+.radio-status { color:#aaa; font-size:10px; margin-top:7px; text-align:center; min-height:13px; }
 
 
 /* SCROLLBAR */
@@ -673,18 +664,24 @@ main {
             RADIO
         </div>
 
-        <div class="radio-container">
+        <div class="radio-player-wrap">
 
-            <select id="radioStation">
-                <option value="bbc_radio_york">BBC Radio York</option>
-                <option value="bbc_radio_five_live">BBC Radio 5 Live</option>
-            </select>
-
-            <div class="radio-player">
-                <video id="radio-video" controls preload="none" playsinline></video>
+            <div class="radio-stations">
+                <button class="radio-station active" data-station="bbc_radio_five_live">BBC 5 LIVE<small>NEWS & SPORT</small></button>
+                <button class="radio-station" data-station="bbc_radio_york">BBC RADIO YORK<small>LOCAL RADIO</small></button>
+                <button class="radio-station" data-station="yorkmix">YORKMIX RADIO<small>YORK & NORTH YORKSHIRE</small></button>
             </div>
 
-            <div id="radio-status" class="radio-status">Press play to start live radio</div>
+            <audio id="radio-audio" preload="none"></audio>
+
+            <div class="radio-controls">
+                <button id="radio-play">▶ PLAY</button>
+                <button id="radio-stop">■ STOP</button>
+                <span>🔊</span>
+                <input id="radio-volume" type="range" min="0" max="1" step="0.01" value="0.8">
+            </div>
+
+            <div id="radio-status" class="radio-status">Choose a station, then press PLAY</div>
 
         </div>
 
@@ -762,67 +759,54 @@ else if (
    RADIO PLAYER
    ===================================================== */
 
-const radioVideo = document.getElementById('radio-video');
-const radioStation = document.getElementById('radioStation');
+const radioAudio = document.getElementById('radio-audio');
+const radioPlay = document.getElementById('radio-play');
+const radioStop = document.getElementById('radio-stop');
+const radioVolume = document.getElementById('radio-volume');
 const radioStatus = document.getElementById('radio-status');
+const radioButtons = document.querySelectorAll('.radio-station');
 
 const radioStreams = {
-    bbc_radio_york:
-        'https://as-hls-ww-live.akamaized.net/pool_90848428/live/ww/bbc_radio_york/bbc_radio_york.isml/bbc_radio_york-audio%3d96000.norewind.m3u8',
-    bbc_radio_five_live:
-        'https://as-hls-ww-live.akamaized.net/pool_89021708/live/ww/bbc_radio_five_live/bbc_radio_five_live.isml/bbc_radio_five_live-audio%3d96000.norewind.m3u8'
+    bbc_radio_york: 'https://as-hls-ww-live.akamaized.net/pool_90848428/live/ww/bbc_radio_york/bbc_radio_york.isml/bbc_radio_york-audio%3d96000.norewind.m3u8',
+    bbc_radio_five_live: 'https://as-hls-ww-live.akamaized.net/pool_89021708/live/ww/bbc_radio_five_live/bbc_radio_five_live.isml/bbc_radio_five_live-audio%3d96000.norewind.m3u8',
+    yorkmix: 'https://stream2.hippynet.co.uk:8020/streamb'
 };
 
-let radioHls = null;
+const radioNames = { bbc_radio_five_live:'BBC Radio 5 Live', bbc_radio_york:'BBC Radio York', yorkmix:'YorkMix Radio' };
+let currentStation = 'bbc_radio_five_live';
 
-function loadRadioStream() {
-
-    const stream = radioStreams[radioStation.value];
-
-    if (!stream) return;
-
-    if (radioHls) {
-        radioHls.destroy();
-        radioHls = null;
-    }
-
-    radioVideo.pause();
-    radioVideo.removeAttribute('src');
-    radioVideo.load();
-    radioStatus.textContent = 'Press play to start live radio';
-
-    if (Hls.isSupported()) {
-
-        radioHls = new Hls({
-            enableWorker: true,
-            lowLatencyMode: true
-        });
-
-        radioHls.loadSource(stream);
-        radioHls.attachMedia(radioVideo);
-
-        radioHls.on(Hls.Events.MANIFEST_PARSED, () => {
-            radioStatus.textContent = 'Live stream ready';
-        });
-
-        radioHls.on(Hls.Events.ERROR, (event, data) => {
-            if (data.fatal) {
-                radioStatus.textContent = 'Radio stream unavailable — try again';
-            }
-        });
-
-    } else if (radioVideo.canPlayType('application/vnd.apple.mpegurl')) {
-
-        radioVideo.src = stream;
-        radioStatus.textContent = 'Live stream ready';
-
-    } else {
-        radioStatus.textContent = 'This browser cannot play the live radio stream';
-    }
+function selectRadioStation(station) {
+    currentStation = station;
+    radioButtons.forEach(b => b.classList.toggle('active', b.dataset.station === station));
+    radioAudio.pause();
+    radioAudio.removeAttribute('src');
+    radioAudio.load();
+    radioAudio.src = radioStreams[station];
+    radioAudio.volume = parseFloat(radioVolume.value);
+    radioStatus.textContent = radioNames[station] + ' — ready';
 }
 
-radioStation.addEventListener('change', loadRadioStream);
-loadRadioStream();
+radioButtons.forEach(button => button.addEventListener('click', () => selectRadioStation(button.dataset.station)));
+
+radioPlay.addEventListener('click', async () => {
+    try {
+        await radioAudio.play();
+        radioStatus.textContent = radioNames[currentStation] + ' — LIVE';
+    } catch (error) {
+        radioStatus.textContent = 'Could not start this stream';
+    }
+});
+
+radioStop.addEventListener('click', () => {
+    radioAudio.pause();
+    radioStatus.textContent = 'Stopped';
+});
+
+radioVolume.addEventListener('input', () => { radioAudio.volume = parseFloat(radioVolume.value); });
+radioAudio.addEventListener('playing', () => { radioStatus.textContent = radioNames[currentStation] + ' — LIVE'; });
+radioAudio.addEventListener('error', () => { radioStatus.textContent = 'Stream unavailable in this browser'; });
+
+selectRadioStation(currentStation);
 
 
 /* =====================================================
