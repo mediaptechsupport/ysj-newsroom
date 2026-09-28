@@ -48,8 +48,8 @@ main {
 
     grid-template-rows:
         1.3fr
-        0.55fr
-        0.55fr
+        0.8fr
+        0.4fr
         1.2fr
         1.2fr;
 
@@ -504,11 +504,11 @@ main {
 
 .radio-player-wrap { padding: 10px 12px 12px; }
 .radio-stations { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
-.radio-station { border:1px solid #555; border-radius:5px; background:#171717; color:white; min-height:52px; cursor:pointer; font-weight:bold; font-size:11px; line-height:1.1; }
+.radio-station { border:1px solid #555; border-radius:5px; background:#171717; color:white; min-height:42px; cursor:pointer; font-weight:bold; font-size:11px; line-height:1.1; }
 .radio-station.active { border-color:#fff; background:#333; }
 .radio-station small { display:block; font-size:8px; font-weight:normal; margin-top:3px; color:#bbb; }
 .radio-controls { display:flex; align-items:center; gap:8px; margin-top:10px; }
-.radio-controls button { border:0; border-radius:4px; background:#444; color:white; padding:7px 11px; font-weight:bold; cursor:pointer; }
+.radio-controls button { border:0; border-radius:4px; background:#444; color:white; padding:6px 10px; font-weight:bold; cursor:pointer; }
 .radio-controls input[type="range"] { flex:1; }
 .radio-status { color:#aaa; font-size:10px; margin-top:7px; text-align:center; min-height:13px; }
 
@@ -604,12 +604,7 @@ main {
 
     <section class="panel clocks-panel">
 
-        <div class="panel-title">
-            UK TIME
-        </div>
-
         <div class="clocks-content">
-            <div class="clock-label">YORK / UK</div>
             <div id="clock-london" class="clock-time">--:--:--</div>
             <div id="clock-date" class="clock-date">Loading...</div>
         </div>
