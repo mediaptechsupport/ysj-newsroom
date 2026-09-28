@@ -47,11 +47,11 @@ main {
     grid-template-columns: 1fr 1fr;
 
     grid-template-rows:
-        1.5fr
-        0.75fr
-        0.75fr
-        1fr
-        1fr;
+        1.2fr
+        0.6fr
+        0.6fr
+        1.2fr
+        1.2fr;
 
     grid-template-areas:
         "sky weather"
@@ -243,39 +243,70 @@ main {
 }
 
 
-/* FOUR DAY FORECAST */
+/* TODAY + THREE DAYS AHEAD */
 
 .weather-forecast {
     margin-top: 5px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1.45fr repeat(3, 1fr);
     gap: 4px;
     position: relative;
     z-index: 1;
 }
 
+.weather-today,
 .weather-day {
     background: rgba(0,0,0,0.32);
     border-radius: 4px;
-    padding: 3px;
+    padding: 4px;
     text-align: center;
-    font-size: 9px;
     line-height: 1.05;
+    min-width: 0;
 }
 
+.weather-today-title,
 .weather-day-name {
     font-weight: bold;
-    margin-bottom: 1px;
     font-size: 9px;
+    margin-bottom: 3px;
+}
+
+.weather-hourly {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+}
+
+.weather-hour {
+    font-size: 8px;
+    color: #b9cbd3;
+}
+
+.weather-hour-icon {
+    font-size: 13px;
+    line-height: 1.1;
+    margin: 1px 0;
+}
+
+.weather-hour-temp {
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.weather-hour-rain {
+    color: #a9d5ed;
+    font-size: 7px;
+    margin-top: 1px;
 }
 
 .weather-day-icon {
-    font-size: 16px;
+    font-size: 17px;
     line-height: 1;
 }
 
 .weather-day-temp {
-    margin-top: 2px;
+    margin-top: 3px;
     font-weight: bold;
     font-size: 10px;
 }
@@ -283,7 +314,7 @@ main {
 .weather-day-rain {
     color: #a9d5ed;
     font-size: 8px;
-    margin-top: 1px;
+    margin-top: 2px;
 }
 
 
@@ -936,6 +967,12 @@ async function loadWeather() {
             'precipitation,' +
             'is_day' +
 
+            '&hourly=' +
+            'temperature_2m,' +
+            'weather_code,' +
+            'precipitation_probability,' +
+            'is_day' +
+
             '&daily=' +
             'temperature_2m_max,' +
             'temperature_2m_min,' +
@@ -970,6 +1007,9 @@ async function loadWeather() {
 
         const daily =
             data.daily;
+
+        const hourly =
+            data.hourly;
 
 
         const icon =
@@ -1104,62 +1144,59 @@ async function loadWeather() {
 
         forecast.innerHTML = '';
 
+        /* A more useful TODAY view: four daytime snapshots. */
+        const nowHour = new Date().getHours();
+        const todayHours = [];
 
-        for (
-            let i = 0;
-            i < 4;
-            i++
-        ) {
+        for (let i = 0; i < hourly.time.length; i++) {
+            const hour = new Date(hourly.time[i]).getHours();
+            if (hour >= Math.max(nowHour, 8) && hour <= 20 && todayHours.length < 4) {
+                todayHours.push(i);
+            }
+        }
 
-            const forecastIcon =
-                weatherIcon(
-                    daily.weather_code[i],
-                    true
-                );
+        if (todayHours.length < 4) {
+            for (let i = 0; i < hourly.time.length && todayHours.length < 4; i++) {
+                if (!todayHours.includes(i)) todayHours.push(i);
+            }
+        }
 
+        const hourlyHtml = todayHours.map(i => {
+            const d = new Date(hourly.time[i]);
+            const hourText = d.toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            return `
+                <div class="weather-hour">
+                    <div>${hourText}</div>
+                    <div class="weather-hour-icon">${weatherIcon(hourly.weather_code[i], hourly.is_day[i] === 1)}</div>
+                    <div class="weather-hour-temp">${Math.round(hourly.temperature_2m[i])}°</div>
+                    <div class="weather-hour-rain">💧${Math.round(hourly.precipitation_probability[i] || 0)}%</div>
+                </div>
+            `;
+        }).join('');
+
+        forecast.innerHTML += `
+            <div class="weather-today">
+                <div class="weather-today-title">TODAY</div>
+                <div class="weather-hourly">${hourlyHtml}</div>
+            </div>
+        `;
+
+        for (let i = 1; i < 4; i++) {
+            const forecastIcon = weatherIcon(daily.weather_code[i], true);
 
             forecast.innerHTML += `
-
                 <div class="weather-day">
-
-                    <div class="weather-day-name">
-                        ${shortDayName(
-                            daily.time[i],
-                            i
-                        )}
-                    </div>
-
-                    <div class="weather-day-icon">
-                        ${forecastIcon}
-                    </div>
-
+                    <div class="weather-day-name">${shortDayName(daily.time[i], i)}</div>
+                    <div class="weather-day-icon">${forecastIcon}</div>
                     <div class="weather-day-temp">
-
-                        ${Math.round(
-                            daily.temperature_2m_max[i]
-                        )}°
-
-                        /
-
-                        ${Math.round(
-                            daily.temperature_2m_min[i]
-                        )}°
-
+                        ${Math.round(daily.temperature_2m_max[i])}° / ${Math.round(daily.temperature_2m_min[i])}°
                     </div>
-
-                    <div class="weather-day-rain">
-
-                        💧
-                        ${Math.round(
-                            daily.precipitation_probability_max[i]
-                        )}%
-
-                    </div>
-
+                    <div class="weather-day-rain">💧 ${Math.round(daily.precipitation_probability_max[i])}%</div>
                 </div>
-
             `;
-
         }
 
 
