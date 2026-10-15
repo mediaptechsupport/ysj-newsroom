@@ -1294,7 +1294,17 @@ async function loadRssFeed(feedUrl, containerId, errorMessage) {
         if (!response.ok) throw new Error('RSS converter request failed');
 
         const data = await response.json();
-        const items = Array.isArray(data.items) ? data.items : [];
+
+        /* This converter returns parsed RSS XML, not a flat data.items array. */
+        const channel = data?.rss?.channel?.[0] || data?.rss?.channel;
+        const rawItems = channel?.item || [];
+        const itemList = Array.isArray(rawItems) ? rawItems : [rawItems];
+        const readField = (value) => Array.isArray(value) ? value[0] : value;
+        const items = itemList.map(item => ({
+            title: readField(item.title),
+            link: readField(item.link),
+            pubDate: readField(item.pubDate)
+        })).filter(item => item.title && item.link);
 
         if (!items.length) {
             throw new Error(errorMessage);
