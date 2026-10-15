@@ -1267,9 +1267,8 @@ setInterval(
 
 /* =====================================================
    LOCAL NEWS
-
-   BBC North Yorkshire RSS -> RSS2JSON
-   York Press RSS -> RSS2JSON
+   Fetch original RSS XML through a CORS proxy, then parse it
+   in the browser. This changes only the local-news section.
    ===================================================== */
 
 const bbcFeed =
@@ -1278,42 +1277,56 @@ const bbcFeed =
 const yorkPressFeed =
     'https://www.yorkpress.co.uk/news/rss';
 
+const rssProxy = 'https://proxy.cors.dev/';
 
 async function loadRssFeed(feedUrl, containerId, errorMessage) {
-
     const container = document.getElementById(containerId);
+    container.innerHTML = '<div class="news-status">Loading headlines...</div>';
 
     try {
+        const response = await fetch(rssProxy + feedUrl, {
+            credentials: 'omit',
+            cache: 'no-store'
+        });
 
-        /* Use an alternative RSS-to-JSON converter */
-        const apiUrl =
-            'https://rssjson.vercel.app/api?url='
-            + encodeURIComponent(feedUrl);
+        if (!response.ok) {
+            const proxyError = response.headers.get('X-Cors-Error');
+            throw new Error(`Feed request failed: HTTP ${response.status}${proxyError ? ' (' + proxyError + ')' : ''}`);
+        }
 
-        const response = await fetch(apiUrl, { cache: 'no-store' });
-        if (!response.ok) throw new Error('RSS converter request failed');
+        const xmlText = await response.text();
+        const xml = new DOMParser().parseFromString(xmlText, 'application/xml');
 
-        const data = await response.json();
+        if (xml.querySelector('parsererror')) {
+            throw new Error('The feed response was not valid XML');
+        }
 
-        /* This converter returns parsed RSS XML, not a flat data.items array. */
-        const channel = data?.rss?.channel?.[0] || data?.rss?.channel;
-        const rawItems = channel?.item || [];
-        const itemList = Array.isArray(rawItems) ? rawItems : [rawItems];
-        const readField = (value) => Array.isArray(value) ? value[0] : value;
-        const items = itemList.map(item => ({
-            title: readField(item.title),
-            link: readField(item.link),
-            pubDate: readField(item.pubDate)
-        })).filter(item => item.title && item.link);
+        // Supports RSS <item> feeds and Atom <entry> feeds.
+        const entries = Array.from(xml.querySelectorAll('item, entry'));
+        const items = entries.map(entry => {
+            const titleElement = entry.querySelector('title');
+            const dateElement = entry.querySelector('pubDate, published, updated, date');
+            const linkElement = entry.querySelector('link[rel="alternate"]') || entry.querySelector('link');
+
+            let link = '';
+            if (linkElement) {
+                link = linkElement.getAttribute('href') || linkElement.textContent.trim();
+            }
+
+            return {
+                title: titleElement ? titleElement.textContent.trim() : '',
+                link,
+                pubDate: dateElement ? dateElement.textContent.trim() : ''
+            };
+        }).filter(item => item.title && item.link);
 
         if (!items.length) {
-            throw new Error(errorMessage);
+            throw new Error('The feed loaded but contained no readable headlines');
         }
 
         container.innerHTML = '';
 
         items.slice(0, 8).forEach(item => {
-
             const article = document.createElement('div');
             article.className = 'news-item';
 
@@ -1326,7 +1339,7 @@ async function loadRssFeed(feedUrl, containerId, errorMessage) {
 
             if (item.pubDate) {
                 const date = new Date(item.pubDate);
-                if (!isNaN(date)) {
+                if (!isNaN(date.getTime())) {
                     const dateElement = document.createElement('div');
                     dateElement.className = 'news-date';
                     dateElement.textContent = date.toLocaleString('en-GB', {
@@ -1343,7 +1356,7 @@ async function loadRssFeed(feedUrl, containerId, errorMessage) {
         container.innerHTML = `
             <div class="news-status">
                 ${errorMessage}<br><br>
-                <small>The news feed is temporarily unavailable.</small>
+                <small>${error.message.replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]))}</small>
             </div>`;
         console.error(errorMessage, error);
     }
@@ -1352,6 +1365,7 @@ async function loadRssFeed(feedUrl, containerId, errorMessage) {
 loadRssFeed(bbcFeed, 'local-news', 'BBC local news unavailable');
 loadRssFeed(yorkPressFeed, 'yorkpress-news', 'York Press headlines unavailable');
 
+// Refresh both feeds every 10 minutes.
 setInterval(() => {
     loadRssFeed(bbcFeed, 'local-news', 'BBC local news unavailable');
     loadRssFeed(yorkPressFeed, 'yorkpress-news', 'York Press headlines unavailable');
