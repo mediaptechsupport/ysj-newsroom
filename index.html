@@ -1285,22 +1285,24 @@ async function loadRssFeed(feedUrl, containerId, errorMessage) {
 
     try {
 
+        /* Use an alternative RSS-to-JSON converter */
         const apiUrl =
-            'https://api.rss2json.com/v1/api.json?rss_url='
+            'https://rssjson.vercel.app/api?url='
             + encodeURIComponent(feedUrl);
 
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error('RSS2JSON request failed');
+        const response = await fetch(apiUrl, { cache: 'no-store' });
+        if (!response.ok) throw new Error('RSS converter request failed');
 
         const data = await response.json();
+        const items = Array.isArray(data.items) ? data.items : [];
 
-        if (data.status !== 'ok' || !data.items || !data.items.length) {
+        if (!items.length) {
             throw new Error(errorMessage);
         }
 
         container.innerHTML = '';
 
-        data.items.slice(0, 8).forEach(item => {
+        items.slice(0, 8).forEach(item => {
 
             const article = document.createElement('div');
             article.className = 'news-item';
